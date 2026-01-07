@@ -1,0 +1,78 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ evento.nombre }} — Detalle</title>
+    <link rel="stylesheet" href="{% static 'podcast/css/styles.css' %}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1 class="brand">Mi Sitio Moderno</h1>
+        <nav class="nav">
+          <a href="/inicio/" class="nav-link">Volver</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <article class="event-card">
+        <h2>{{ evento.nombre }}</h2>
+        <time class="event-date">{{ evento.fecha|date:"d M Y H:i" }}</time>
+        <p class="event-location">{{ evento.lugar }}</p>
+        <p class="event-desc">{{ evento.descripcion }}</p>
+      </article>
+
+      <section style="margin-top:18px">
+        <h3>Podcasts</h3>
+        {% if podcasts %}
+          {% for p in podcasts %}
+            <div class="event-card" style="margin-bottom:10px">
+              <strong>{{ p.titulo }}</strong>
+              {% if p.archivo_audio %}
+                <audio controls style="width:100%;margin-top:8px">
+                  <source src="{{ p.archivo_audio.url }}" type="audio/mpeg">
+                  Tu navegador no soporta audio.
+                </audio>
+              {% else %}
+                <p class="muted">No hay archivo de audio disponible.</p>
+              {% endif %}
+              <p class="muted">{{ p.descripcion|default:"" }}</p>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="muted">No hay podcasts para este evento.</p>
+          <a class="btn" href="{% url 'upload_podcast' evento.pk %}">Subir podcast</a>
+        {% endif %}
+      </section>
+
+      <section style="margin-top:18px">
+        <h3>Reels</h3>
+        {% if reels %}
+          {% for r in reels %}
+            <div class="event-card" style="margin-bottom:10px">
+              <strong>{{ r.titulo }}</strong>
+              {% if r.video %}
+                <video controls style="width:100%;margin-top:8px;max-height:360px">
+                  <source src="{{ r.video.url }}" type="video/mp4">
+                  Tu navegador no soporta video.
+                </video>
+              {% else %}
+                <p class="muted">No hay video disponible.</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="muted">No hay reels para este evento.</p>
+          <a class="btn" href="{% url 'upload_reel' evento.pk %}">Subir reel</a>
+        {% endif %}
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">© {% now "Y" %} Mi Sitio Moderno</div>
+    </footer>
+  </body>
+</html>

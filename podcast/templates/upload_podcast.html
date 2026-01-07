@@ -1,0 +1,21 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Subir Podcast — {{ evento.nombre }}</title>
+    <link rel="stylesheet" href="{% static 'podcast/css/styles.css' %}">
+  </head>
+  <body>
+    <div class="container" style="padding-top:24px">
+      <a href="{% url 'evento_detalle' evento.pk %}" class="nav-link">← Volver</a>
+      <h2>Subir Podcast para: {{ evento.nombre }}</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Subir</button>
+      </form>
+    </div>
+  </body>
+</html>

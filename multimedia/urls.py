@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from podcast.views import inicio_view
+from podcast.views import inicio_view, evento_detalle, upload_podcast, upload_reel
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inicio/', inicio_view)
+    path('', inicio_view),
+    path('evento/<int:pk>/', evento_detalle, name='evento_detalle')
+    ,path('evento/<int:pk>/upload/podcast/', upload_podcast, name='upload_podcast')
+    ,path('evento/<int:pk>/upload/reel/', upload_reel, name='upload_reel')
 ]

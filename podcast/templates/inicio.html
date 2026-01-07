@@ -1,18 +1,50 @@
-
-<html>
+{% load static %}
+<!doctype html>
+<html lang="es">
     <head>
-        <title>Formulario de contacto</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Inicio — Eventos</title>
+        <link rel="stylesheet" href="{% static 'podcast/css/styles.css' %}">
     </head>
     <body>
-       <h1>Contactenos</h1>
-       <form>
-        <p>Asuntoo: <input type= "text" name="txtAsunto"></p>
-        <p>Email: <input type= "email" name="txtEmail"></p>
-        <p>
-         Mensaje:
-          <textarea name="txtMensaje" rows="5" cols="30" style="resize none;"></textarea>
-        </p>
-<input type="submit" value="Enviar"/>
-       </form>
+        <header class="site-header">
+            <div class="container">
+                <h1 class="brand">Mi Sitio Moderno</h1>
+                <nav class="nav">
+                    <a href="/inicio/" class="nav-link active">Inicio</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="hero">
+                <h2>Próximos eventos</h2>
+                <p class="lead">Consulta los eventos próximos y sus detalles.</p>
+            </section>
+
+            <section class="events-grid">
+                {% if eventos %}
+                    {% for event in eventos %}
+                        <a href="{% url 'evento_detalle' event.id %}" class="event-link" aria-label="Ver {{ event.nombre }}">
+                            <article class="event-card">
+                                <div class="event-card-header">
+                                    <h3 class="event-title">{{ event.nombre }}</h3>
+                                    <time class="event-date">{{ event.fecha|date:"d M Y H:i" }}</time>
+                                </div>
+                                <p class="event-location">{{ event.lugar }}</p>
+                                <p class="event-desc">{{ event.descripcion|truncatechars:160 }}</p>
+                            </article>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <p class="muted">No hay eventos programados por el momento.</p>
+                {% endif %}
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">© {% now "Y" %} Mi Sitio Moderno</div>
+        </footer>
     </body>
 </html>
